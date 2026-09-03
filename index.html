@@ -156,8 +156,38 @@
             box-shadow: 2px 2px 0px var(--line-black);
         }
 
+        /* 返回按鈕樣式 */
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--light-brown);
+            font-family: 'Noto Serif TC', serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .btn-back:hover {
+            color: var(--coffee-brown);
+        }
+
         /* 2. 測驗頁面 */
         .quiz-screen { display: none; }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--light-brown);
+            font-family: 'Klee One', serif;
+        }
 
         .progress-bar-container {
             width: 100%;
@@ -355,8 +385,8 @@
 
     <!-- ==================== 2. 測驗頁面 ==================== -->
     <div id="quiz-screen" class="quiz-screen">
-        <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--light-brown); font-family: 'Klee One', serif;">
-            <span>QUESTION</span>
+        <div class="quiz-header">
+            <button class="btn-back" onclick="prevQuestion()">‹ 返回上頁</button>
             <span id="progress-text">01 / 07</span>
         </div>
         <div class="progress-bar-container">
@@ -412,7 +442,7 @@ const coffeeImages = {
 // 5 種結果資料庫
 const results = {
     BLACK: {
-        title: "☕ 大自然露營黑咖啡",
+        title: "☕ 平靜冰美式",
         tag: "【 靜心默想型 】",
         desc: "獨處與平靜是你的能量來源。比起喧鬧，你更能在安靜環境、大自然與寫日記中經歷神微小的聲音。在你心中有一塊專屬神的秘密基地。",
         devotion: "拿出手機備忘錄或紙筆，寫下 3 件今天想感謝上帝的小事，寫完後做一個深呼吸，享受當下的平安。"
@@ -430,7 +460,7 @@ const results = {
         devotion: "傳一張鼓勵的貼紙或文字訊息給一位最近沒聯絡的朋友，跟他說：「今天突然想到你，祝你有美好的一天！」"
     },
     MACHA: {
-        title: "🍵 沉靜抹茶拿鐵",
+        title: "🍵 沉穩抹茶拿鐵",
         tag: "【 真理研讀型 】",
         desc: "探索與理解是你的屬靈開關。你喜歡有條理地學習、解開聖經歷史與背景，在真理的智慧與邏輯中遇見神，為信仰奠定堅固基石。",
         devotion: "挑選一句你喜歡的經文，試著用自己的話（或現代流行用語）把它重寫一遍，體會當中的意涵。"
@@ -449,7 +479,7 @@ const questions = [
         text: "1. 結束了極度疲憊的一天，回到房間你最希望透過什麼方式讓內心恢復平靜？",
         options: [
             { text: "A. 關掉燈光，戴上耳機聽輕音樂，靜靜寫日記或向神吐露心聲", type: "BLACK" },
-            { text: "B. 放一首超爆發力的敬拜歌，跟著大聲唱出來、揮灑汗水", type: "FRUIT" },
+            { text: "B. 放一首喜歡的敬拜詩歌，一邊跟著大聲唱、一邊敬拜禱告", type: "FRUIT" },
             { text: "C. 找最信任的小組長或好友通電話，把心中的委屈全說出來", type: "COCOA" },
             { text: "D. 翻開一本屬靈書籍或查經資料，試著釐清今天混亂的頭腦與邏輯", type: "MACHA" },
             { text: "E. 拿起畫筆畫畫、做手作，或是去戶外散步塗鴉紓解壓力", type: "LATTE" }
@@ -458,69 +488,73 @@ const questions = [
     {
         text: "2. 當你覺得讀聖經有點枯燥乏味、靜不下心時，哪種方式最能引發你的好奇心？",
         options: [
-            { text: "A. 找一個安靜的公園或海邊，邊看著風景邊隨性讀一段經文", type: "BLACK" },
-            { text: "B. 播放有節奏感的聖經歌或朗誦影片，跟著節奏一起讀", type: "FRUIT" },
-            { text: "C. 和兩三個朋友組隊「線上讀經打卡」，讀完互相發語音討論", type: "COCOA" },
-            { text: "D. 研究經文的歷史背景、地圖與原文含意，像解謎一樣搞懂它", type: "MACHA" },
-            { text: "E. 嘗試「聖經繪畫（Bible Journaling）」，把有感觸的經文畫成插圖", type: "LATTE" }
+            { text: "A. 和兩三個朋友組隊「線上讀經打卡」，讀完互相發語音討論", type: "COCOA"  },
+            { text: "B. 研究經文的歷史背景、地圖與原文含意，像解謎一樣搞懂它", type: "MACHA"  },
+            { text: "C. 嘗試「聖經繪畫（Bible Journaling）」，把有感觸的經文畫成插圖", type: "LATTE" },
+            { text: "D. 找一個安靜的公園或海邊，邊看著風景邊隨性讀一段經文", type: "BLACK" },
+            { text: "E. 播放有節奏感的聖經歌或朗誦影片，跟著節奏一起讀", type: "FRUIT" }
         ]
     },
     {
         text: "3. 你覺得自己在什麼樣的情境或環境下，最容易感受到上帝的臨在與愛？",
         options: [
-            { text: "A. 獨自一人在深夜的房間裡，安靜禱告到心裡感到平安的時刻", type: "BLACK" },
+            { text: "A. 當我在困惑中突然讀懂一段經文，頓悟上帝旨意的時刻", type: "MACHA"  },
             { text: "B. 在數百人的青年營會中，大家一起舉手、大聲歡呼敬拜的瞬間", type: "FRUIT" },
-            { text: "C. 在小組吃宵夜聊天，大家真誠分享近況並彼此擁抱禱告時", type: "COCOA" },
-            { text: "D. 當我在困惑中突然讀懂一段經文，頓悟上帝旨意的時刻", type: "MACHA" },
-            { text: "E. 當我參與志工服事、出差派或用我的才藝幫助到別人的時候", type: "LATTE" }
+            { text: "C. 獨自一人在深夜的房間裡，安靜禱告到心裡感到平安的時刻", type: "BLACK"},
+            { text: "D. 當我參與志工服事、出差派或用我的才藝幫助到別人的時候", type: "LATTE"},
+            { text: "E. 在小組吃宵夜聊天，大家真誠分享近況並彼此擁抱禱告時", type: "COCOA"  }
         ]
     },
     {
         text: "4. 面對信仰中的迷惘、枯乾或懷疑時，你通常會怎麼處理？",
         options: [
-            { text: "A. 給自己一段獨處的時間，寫信給上帝，等待內心微小的聲音", type: "BLACK" },
-            { text: "B. 去參加一場高能量的敬拜夜，在音樂與禱告中重新被聖靈充滿", type: "FRUIT" },
-            { text: "C. 約輔導或朋友出來喝杯飲料，傾訴我心中的掙扎與困惑", type: "COCOA" },
-            { text: "D. 上網搜尋講座、論文或發問，一定要把心中的疑問徹底查清楚", type: "MACHA" },
-            { text: "E. 先別想太多！直接去做點有意義的事，在行動中找回熱情", type: "LATTE" }
+            { text: "A. 先別想太多！直接去做點有意義的事，在行動中找回熱情", type: "LATTE" },
+            { text: "B. 給自己一段獨處的時間，寫信給上帝，等待內心微小的聲音", type: "BLACK" },
+            { text: "C. 去參加一場高能量的敬拜夜，在音樂與禱告中重新被聖靈充滿", type: "FRUIT" },
+            { text: "D. 約輔導或朋友出來喝杯飲料，傾訴我心中的掙扎與困惑", type: "COCOA" },
+            { text: "E. 上網搜尋講座、論文或發問，一定要把心中的疑問徹底查清楚", type: "MACHA" }
         ]
     },
     {
         text: "5. 如果要設計一個屬於你的「理想靈修角」，裡面一定要有什麼？",
         options: [
-            { text: "A. 一扇看得到天空的窗戶、舒適的靠枕與精美的靈修日記本", type: "BLACK" },
-            { text: "B. 高音質藍芽喇叭、彩色氛圍燈與可以隨意跳動的空間", type: "FRUIT" },
-            { text: "C. 一張可以容納 3-4 人的溫馨沙發，還有吃不完的小點心", type: "COCOA" },
-            { text: "D. 疊得高高的大字典、各版本聖經與心智圖筆記本", type: "MACHA" },
+            { text: "A. 高音質藍芽喇叭、彩色氛圍燈與可以隨意跳動的空間", type: "FRUIT"  },
+            { text: "B. 疊得高高的大字典、各版本聖經與心智圖筆記本", type: "MACHA"},
+            { text: "C. 一扇看得到天空的窗戶、舒適的靠枕與精美的靈修日記本", type: "BLACK" },
+            { text: "D. 一張可以容納 3-4 人的溫馨沙發，還有吃不完的小點心", type: "COCOA" },
             { text: "E. 滿滿的彩色筆、貼紙、拍立得照片與手作工具箱", type: "LATTE" }
         ]
     },
     {
         text: "6. 身邊的朋友最常誇獎你在團契或小組中具備什麼樣的特質？",
         options: [
-            { text: "A. 「你總是給人一種很平靜、很有安撫力的感覺。」", type: "BLACK" },
-            { text: "B. 「你就像太陽一樣！只要有你在，氣氛永遠都很熱血帶勁！」", type: "FRUIT" },
+            { text: "A. 「你就像太陽一樣！只要有你在，氣氛永遠都很熱血帶勁！」", type: "FRUIT" },
+            { text: "B.  「你點子超級多！手又巧，總能把活動搞得很酷很有創意！」", type: "LATTE" },
             { text: "C. 「你超會聽人說話，跟你聊天感覺好溫暖、好被理解。」", type: "COCOA" },
             { text: "D. 「你頭腦好清晰，每次有不懂的難題問你都能得到條理分析！」", type: "MACHA" },
-            { text: "E. 「你點子超級多！手又巧，總能把活動搞得很酷很有創意！」", type: "LATTE" }
+            { text: "E. 「你總是給人一種很平靜、很有安撫力的感覺。」", type: "BLACK"}
         ]
     },
     {
         text: "7. 當你想要向一位非基督徒朋友分享上帝的愛時，你最習慣的方式是：",
         options: [
-            { text: "A. 送他一張我親手寫的祝福卡片，並默默在私底下持續為他禱告", type: "BLACK" },
-            { text: "B. 邀請他一起去參加超酷的教會音樂祭、熱舞社或大型青年晚會", type: "FRUIT" },
-            { text: "C. 主動關心他的生活狀況，請他吃頓飯，做他最溫暖的傾聽者", type: "COCOA" },
-            { text: "D. 當他遇到人生疑惑時，用很有邏輯與智慧的方式解答他的問題", type: "MACHA" },
-            { text: "E. 用實際行動去幫忙他解決眼前的困難，用愛心服事他", type: "LATTE" }
+            { text: "A. 當他遇到人生疑惑時，用很有邏輯與智慧的方式解答他的問題", type: "MACHA" },
+            { text: "B. 送他一張我親手寫的祝福卡片，並默默在私底下持續為他禱告", type: "BLACK" },
+            { text: "C. 用實際行動去幫忙他解決眼前的困難，用愛心服事他", type: "LATTE"},
+            { text: "D. 邀請他一起去參加超酷的教會音樂祭、熱舞社或大型青年晚會", type: "FRUIT" },
+            { text: "E. 主動關心他的生活狀況，請他吃頓飯，做他最溫暖的傾聽者", type: "COCOA"  }
         ]
     }
 ];
 
 let currentIndex = 0;
 let scores = { BLACK: 0, FRUIT: 0, COCOA: 0, MACHA: 0, LATTE: 0 };
+let userHistory = []; // 紀錄用戶每題選擇的答案類型，方便退回上一題時扣除分數
 
 function startQuiz() {
+    currentIndex = 0;
+    scores = { BLACK: 0, FRUIT: 0, COCOA: 0, MACHA: 0, LATTE: 0 };
+    userHistory = [];
     document.getElementById("home-screen").style.display = "none";
     document.getElementById("quiz-screen").style.display = "block";
     showQuestion();
@@ -548,11 +582,28 @@ function showQuestion() {
 
 function handleSelect(type) {
     scores[type]++;
+    userHistory.push(type);
     currentIndex++;
     if (currentIndex < questions.length) {
         showQuestion();
     } else {
         showResult();
+    }
+}
+
+function prevQuestion() {
+    if (currentIndex === 0) {
+        // 第一題按返回：回到首頁
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("home-screen").style.display = "flex";
+    } else {
+        // 退回前一題並扣除相應的分數
+        currentIndex--;
+        const lastSelectedType = userHistory.pop();
+        if (lastSelectedType && scores[lastSelectedType] > 0) {
+            scores[lastSelectedType]--;
+        }
+        showQuestion();
     }
 }
 
@@ -590,6 +641,7 @@ function downloadCard() {
 function restartQuiz() {
     currentIndex = 0;
     scores = { BLACK: 0, FRUIT: 0, COCOA: 0, MACHA: 0, LATTE: 0 };
+    userHistory = [];
     document.getElementById("result-screen").style.display = "none";
     document.getElementById("home-screen").style.display = "flex";
 }
